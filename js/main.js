@@ -38,6 +38,27 @@ function cargarProductos(productosElegidos) {
         `;
 
         contenedorProductos.append(div);
+
+                // Agregar un evento click a las imágenes de los productos
+        const imagenesProductos = document.querySelectorAll(".producto-imagen");
+
+        imagenesProductos.forEach(imagen => {
+            imagen.addEventListener("click", mostrarDetalleProducto);
+        });
+
+        function mostrarDetalleProducto(e) {
+            const idImagen = e.currentTarget.parentElement.querySelector(".producto-agregar").id;
+            const productoDetalle = productos.find(producto => producto.id === idImagen);
+
+            Swal.fire({
+                title: productoDetalle.titulo,
+                text: productoDetalle.descripcion,
+                imageUrl: productoDetalle.imagen,
+                imageWidth: 400,
+                imageHeight: 200,
+                imageAlt: productoDetalle.titulo,
+            });
+        }
     })
 
     actualizarBotonesAgregar();
@@ -125,23 +146,23 @@ function actualizarNumerito() {
     numerito.innerText = nuevoNumerito;
 }
 
-// Agregar un evento click a las imágenes de los productos
-const imagenesProductos = document.querySelectorAll(".producto-imagen");
+// // Agregar un evento click a las imágenes de los productos
+// const imagenesProductos = document.querySelectorAll(".producto-imagen");
 
-imagenesProductos.forEach(imagen => {
-    imagen.addEventListener("click", mostrarDetalleProducto);
-});
+// imagenesProductos.forEach(imagen => {
+//     imagen.addEventListener("click", mostrarDetalleProducto);
+// });
 
-function mostrarDetalleProducto(e) {
-    const idImagen = e.currentTarget.parentElement.querySelector(".producto-agregar").id;
-    const productoDetalle = productos.find(producto => producto.id === idImagen);
+// function mostrarDetalleProducto(e) {
+//     const idImagen = e.currentTarget.parentElement.querySelector(".producto-agregar").id;
+//     const productoDetalle = productos.find(producto => producto.id === idImagen);
 
-    Swal.fire({
-        title: productoDetalle.titulo,
-        text: productoDetalle.descripcion,
-        imageUrl: productoDetalle.imagen,
-        imageWidth: 400,
-        imageHeight: 200,
-        imageAlt: productoDetalle.titulo,
-    });
-}
+//     Swal.fire({
+//         title: productoDetalle.titulo,
+//         text: productoDetalle.descripcion,
+//         imageUrl: productoDetalle.imagen,
+//         imageWidth: 400,
+//         imageHeight: 200,
+//         imageAlt: productoDetalle.titulo,
+//     });
+// }
