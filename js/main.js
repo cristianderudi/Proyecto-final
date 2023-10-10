@@ -124,3 +124,24 @@ function actualizarNumerito() {
     let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
     numerito.innerText = nuevoNumerito;
 }
+
+// Agregar un evento click a las imágenes de los productos
+const imagenesProductos = document.querySelectorAll(".producto-imagen");
+
+imagenesProductos.forEach(imagen => {
+    imagen.addEventListener("click", mostrarDetalleProducto);
+});
+
+function mostrarDetalleProducto(e) {
+    const idImagen = e.currentTarget.parentElement.querySelector(".producto-agregar").id;
+    const productoDetalle = productos.find(producto => producto.id === idImagen);
+
+    Swal.fire({
+        title: productoDetalle.titulo,
+        text: productoDetalle.descripcion,
+        imageUrl: productoDetalle.imagen,
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: productoDetalle.titulo,
+    });
+}

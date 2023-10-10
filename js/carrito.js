@@ -47,6 +47,18 @@ function cargarProductosCarrito() {
             `;
     
             contenedorCarritoProductos.append(div);
+
+            const imagen = div.querySelector(".carrito-producto-imagen");
+            imagen.addEventListener("click", () => {
+                Swal.fire({
+                    title: producto.titulo,
+                    text: producto.descripcion, // Asegúrate de tener la descripción de cada producto en tu archivo 'productos.json'
+                    imageUrl: producto.imagen,
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: producto.titulo,
+                })
+            });
         })
     
     actualizarBotonesEliminar();
