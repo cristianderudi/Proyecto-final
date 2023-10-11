@@ -128,23 +128,68 @@ function agregarAlCarrito(e) {
     const idBoton = e.currentTarget.id;
     const productoAgregado = productos.find(producto => producto.id === idBoton);
 
-    if(productosEnCarrito.some(producto => producto.id === idBoton)) {
-        const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
-        productosEnCarrito[index].cantidad++;
-    } else {
-        productoAgregado.cantidad = 1;
-        productosEnCarrito.push(productoAgregado);
-    }
+    // Verifica el stock disponible antes de agregar al carrito
+    if (productoAgregado.stock > 0) {
+        if (productosEnCarrito.some(producto => producto.id === idBoton)) {
+            const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
+            productosEnCarrito[index].cantidad++;
+            productoAgregado.stock--; // Resta del stock
+        } else {
+            productoAgregado.cantidad = 1;
+            productosEnCarrito.push(productoAgregado);
+            productoAgregado.stock--; // Resta del stock
+        }
 
-    actualizarNumerito();
+        actualizarNumerito();
+
+    // if(productosEnCarrito.some(producto => producto.id === idBoton)) {
+    //     const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
+    //     productosEnCarrito[index].cantidad++;
+    // } else {
+    //     productoAgregado.cantidad = 1;
+    //     productosEnCarrito.push(productoAgregado);
+    // }
+
+    // actualizarNumerito();
 
     localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+} else {
+    Swal.fire({
+        title: "Producto no disponible",
+        text: "Este producto no está disponible en stock.",
+        icon: "error",
+    });
+}
 }
 
 function actualizarNumerito() {
     let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
     numerito.innerText = nuevoNumerito;
 }
+
+function mostrarDetalleProducto(producto) {
+    const titulo = producto.titulo;
+    const descripcion = producto.descripcion;
+    const imagen = producto.imagen;
+    const stock = producto.stock;
+
+    // Verifica el stock disponible y muestra si el producto está disponible o no
+    const disponible = stock > 0 ? "Disponible" : "No disponible";
+
+    Swal.fire({
+        title: titulo,
+        text: `${descripcion}\n\nStock: ${stock} unidades\n${disponible}`,
+        imageUrl: imagen,
+        imageWidth,
+    });
+}
+
+
+// function actualizarNumerito() {
+//     let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
+//     numerito.innerText = nuevoNumerito;
+// }
+
 
 // // Agregar un evento click a las imágenes de los productos
 // const imagenesProductos = document.querySelectorAll(".producto-imagen");
